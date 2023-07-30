@@ -21,3 +21,5 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag zoinzoin/runpod_invokeai:$(date +%s)
+    - name: Push to Docker Hub
+      run: docker push zoinzoin/runpod_invokeai:$(date +%s)
