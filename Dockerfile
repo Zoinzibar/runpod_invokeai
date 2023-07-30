@@ -5,8 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     apt-get install -y --no-install-recommends rsync curl python3.10 python3.10-venv  python3-opencv python3-pip build-essential libopencv-dev nginx lsof && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+    rm -rf /var/lib/apt/lists/*
 ENV INVOKEAI_ROOT=/workspace/invokeai
 
 RUN python3 -m venv /workspace/invokeai/venv
@@ -14,7 +13,9 @@ ENV PATH="/workspace/invokeai/venv/bin:$PATH"
 
 WORKDIR /workspace/invokeai
 
-RUN pip install "InvokeAI[xformers]" --use-pep517 --extra-index-url https://download.pytorch.org/whl/cu118 && \
+RUN pip install --no-cache-dir --no-deps torch torchvision --index-url https://download.pytorch.org/whl/cu118
+
+RUN pip install --no-cache-dir --no-deps "InvokeAI[xformers]" --use-pep517 --extra-index-url https://download.pytorch.org/whl/cu118 && \
     pip install pypatchmatch jupyterlab jupyterlab_widgets ipykernel ipywidgets
 
 RUN mv /workspace/invokeai /invokeai
