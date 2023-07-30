@@ -1,10 +1,12 @@
-FROM runpod/pytorch:2.0.1-py3.10-cuda11.8.0-devel
+FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && \
-    apt-get install -y nano rsync build-essential  python3-opencv libopencv-dev nginx lsof && \
+    apt-get install -y --no-install-recommends rsync curl python3.10 python3.10-venv  python3-opencv python3-pip build-essential libopencv-dev nginx lsof && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
+    rm -rf /var/lib/apt/lists/* && \
+    pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 ENV INVOKEAI_ROOT=/workspace/invokeai
 
 RUN python -m venv /workspace/invokeai/venv
@@ -12,9 +14,8 @@ ENV PATH="/workspace/invokeai/venv/bin:$PATH"
 
 WORKDIR /workspace/invokeai
 
-RUN python -m pip install --upgrade pip && \
-    pip install "InvokeAI[xformers]" --use-pep517 --extra-index-url https://download.pytorch.org/whl/cu118 && \
-    pip install pypatchmatch
+RUN pip install "InvokeAI[xformers]" --use-pep517 --extra-index-url https://download.pytorch.org/whl/cu118 && \
+    pip install pypatchmatch jupyterlab jupyterlab_widgets ipykernel ipywidgets
 
 RUN mv /workspace/invokeai /invokeai
 
