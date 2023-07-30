@@ -9,7 +9,7 @@ RUN apt update && \
     pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 ENV INVOKEAI_ROOT=/workspace/invokeai
 
-RUN python -m venv /workspace/invokeai/venv
+RUN python3 -m venv /workspace/invokeai/venv
 ENV PATH="/workspace/invokeai/venv/bin:$PATH"
 
 WORKDIR /workspace/invokeai
