@@ -5,12 +5,6 @@ set -e  # Exit the script if any statement returns a non-true return value
 #                          Function Definitions                                #
 # ---------------------------------------------------------------------------- #
 
-# Start nginx service
-start_nginx() {
-    echo "Starting Nginx service..."
-    service nginx start
-}
-
 # Execute script if exists
 execute_script() {
     local script_path=$1
@@ -54,16 +48,12 @@ start_jupyter() {
 #                               Main Program                                   #
 # ---------------------------------------------------------------------------- #
 
-start_nginx
-
-execute_script "/pre_start.sh" "Running pre-start script..."
-
 echo "Pod Started"
 
 setup_ssh
 start_jupyter
 export_env_vars
 
-execute_script "/post_start.sh" "Running post-start script..."
+execute_script "/comfy.sh" "Running comfyui start script..."
 
 sleep infinity
